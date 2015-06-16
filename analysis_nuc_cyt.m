@@ -7,7 +7,7 @@ rowoffset = 1;
 coloffset = 2;
 
 for row = 1 : 6
-     parfor col = 1 : 8 
+     for col = 1 : 8 
         
         res_F_cyt = [];
         res_F_nuc = [];

@@ -1,13 +1,10 @@
 %%
 close all, clear all;
-cd('/Volumes/HOME/MATLAB/MedImmune');
-
 %%
 rowoffset = 1;
 coloffset = 2;
 
 for row = 1 : 6
-%     parfor col = 1 : 8
     for col = 1 : 8
         res_num = 0;
         res_F_mCherry = [];

@@ -5,6 +5,7 @@ raw_data = [folder, 'kratio.mat'];
 pack = load(raw_data);
 n_treat = length(treatment.time);
 kr = zeros(n_treat, 1);
+krSd = zeros(n_treat, 1);
 
 first_row = min(treatment.well(:, 1));
 first_col = 12;
@@ -19,11 +20,13 @@ for i = 1 : n_treat
     row = treatment.well(i, 1) - 'A' + 1;
     col = str2num(treatment.well(i, 2:3));
       kr(i) = pack.kratio(row, col);
+      krSd(i) = pack.kratioSd(row, col);
 end
 treatment.kratio(:, 1) = kr(:);
+treatment.kratioSd(:, 1) = krSd(:);
 items = fieldnames(treatment);
 %%
-exclude_drug = {'well', 'time', 'date', 'kratio', 'cell_line'};
+exclude_drug = {'well', 'time', 'date', 'kratio', 'cell_line', 'kratioSd'};
 drug_names = setdiff(items, exclude_drug);
 drug = drug_names{1};
 for i = 2 : length(drug_names)

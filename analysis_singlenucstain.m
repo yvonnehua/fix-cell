@@ -1,13 +1,10 @@
 %%
 close all, clear all;
-cd('/Volumes/HOME/MATLAB/MedImmune');
-
 %%
 rowoffset = 1;
 coloffset = 1;
 
 for row = 1 : 6
-%     parfor col = 1 : 8
     for col = 1 : 10
         res = struct('num', {}, 'I_dapi_var', {}, 'nuc_area', {});
         
@@ -29,5 +26,3 @@ for row = 1 : 6
     end
     
 end
-
-% save('20140616_HeLa_ICRP_AMG655_rhT', 'res')
