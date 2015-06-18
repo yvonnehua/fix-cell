@@ -29,7 +29,7 @@ elseif strcmp(mode, 'plate') || strcmp(mode, 'col')
     end
     if strcmp(mode, 'col')
         col = varargin{2};    
-        files = dir([imgpath, sprintf('r??c%02d*.tiff', col)]);
+        files = dir([imgpath, sprintf('r*c%02d*.tiff', col)]);
         n = nan(8, MAX_SITES);
     else
         files = dir([imgpath, '*.tiff']);
