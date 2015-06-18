@@ -1,4 +1,4 @@
-function n = countnucs(mode, im)
+function n = countnucs(mode, varargin)
 % COUNTNUCS  Count nuclei by non-maximum suppression of blurred DAPI image.
 %   N = COUNTNUCS('file', FILE) returns the number of nuclei in image file
 %   FILE.
@@ -9,10 +9,12 @@ function n = countnucs(mode, im)
 %   of ~5000 cells and cultured for 24 hours. Yvonne and Sam.
 MAX_SITES = 9;
 if strcmp(mode, 'file')
-    n = countnucs('image', double(imread(im)));
+    file = varargin{1};
+    n = countnucs('image', double(imread(file)));
 elseif strcmp(mode, 'image')
     ismax = @(x) all(x(2, 2) > x([1 : 4, 6 : 9]));
     flt_blur = fspecial('gaussian', [10, 10], 3.5);
+    im = varargin{1};
     thres = 2.5 * prctile(im(:), 30);
     msk = bwmorph(im > thres, 'erode', 2);
     im(~msk) = 0;
@@ -20,13 +22,19 @@ elseif strcmp(mode, 'image')
     immax = nlfilter(im, [3, 3], ismax);
     imagesc(im);
     n = sum(immax(:));
-elseif strcmp(mode, 'plate')
-    imgpath = im;
+elseif strcmp(mode, 'plate') || strcmp(mode, 'col')
+    imgpath = varargin{1};
     if imgpath(end) ~= '/'
         imgpath = [imgpath, '/'];
     end
-    files = dir([imgpath, '*.tiff']);
-    n = nan(8, 12, MAX_SITES);
+    if strcmp(mode, 'col')
+        col = varargin{2};    
+        files = dir([imgpath, sprintf('r??c%02d*.tiff', col)]);
+        n = nan(8, MAX_SITES);
+    else
+        files = dir([imgpath, '*.tiff']);
+        n = nan(8, 12, MAX_SITES);
+    end
     for k = 1 : length(files)
         tok = regexp(files(k).name, '^r(\d\d)c(\d\d)f(\d\d)', 'tokens');
         if files(k).isdir || length(tok) ~= 1
